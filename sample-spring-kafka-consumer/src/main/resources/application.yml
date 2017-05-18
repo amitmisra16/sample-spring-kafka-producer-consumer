@@ -6,3 +6,18 @@ kafka:
     bootstrap: localhost:9092
     group: WorkUnitApp
     topic: workunits
+
+spring:
+  application:
+    name: sample-consumer
+  cloud:
+    stream:
+      kafka:
+        binder:
+          headers:
+            - X-B3-TraceId
+            - X-B3-SpanId
+            - X-B3-Sampled
+            - X-B3-ParentSpanId
+            - X-Span-Name
+            - X-Span-Export

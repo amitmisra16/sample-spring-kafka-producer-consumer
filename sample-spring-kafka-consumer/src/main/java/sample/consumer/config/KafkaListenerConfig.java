@@ -4,6 +4,9 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.SpanTextMap;
+import org.springframework.cloud.sleuth.instrument.messaging.MessagingSpanTextMapInjector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -57,5 +60,17 @@ public class KafkaListenerConfig {
     @Bean
     public Deserializer workUnitJsonValueDeserializer() {
         return new JsonDeserializer(WorkUnit.class);
+    }
+
+
+    @Bean
+    public MessagingSpanTextMapInjector messagingSpanTextMapInjector() {
+        return new MessagingSpanTextMapInjector() {
+            @Override
+            public void inject(Span span, SpanTextMap carrier) {
+                carrier.put(Span.TRACE_ID_NAME, span.traceIdString());
+                carrier.put(Span.SPAN_ID_NAME, Span.idToHex(span.getSpanId()));
+            }
+        };
     }
 }
