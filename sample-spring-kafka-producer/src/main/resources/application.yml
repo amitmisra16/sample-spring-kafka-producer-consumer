@@ -3,8 +3,8 @@ server:
 
 kafka:
   producer:
-    bootstrap: localhost:9092
-    topic: workunits
+    bootstrap: amit-mbpro:9092
+    topic: workunitsDemo8
 
 spring:
   application:

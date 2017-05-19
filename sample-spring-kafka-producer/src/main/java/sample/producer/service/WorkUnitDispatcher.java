@@ -2,6 +2,7 @@ package sample.producer.service;
 
 
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.errors.LeaderNotAvailableException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,11 @@ public class WorkUnitDispatcher {
             LOGGER.info("topic = {}, partition = {}, offset = {}, workUnit = {}",
                     recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset(), workUnit);
             return true;
+        } catch (LeaderNotAvailableException e ) {
+            LOGGER.info("Resending message as leader was not available", e);
+           return this.dispatch(workUnit);
         } catch (Exception e) {
+
             throw new RuntimeException(e);
         }
     }

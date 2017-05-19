@@ -4,8 +4,8 @@ server:
 kafka:
   consumer:
     bootstrap: localhost:9092
-    group: WorkUnitApp
-    topic: workunits
+    group: WorkUnitAppDemo8
+    topic: workunitsDemo8
 
 spring:
   application:
