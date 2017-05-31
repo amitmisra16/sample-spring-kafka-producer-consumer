@@ -2,10 +2,8 @@ package sample.consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.sleuth.annotation.NewSpan;
+import org.springframework.cloud.sleuth.annotation.ContinueSpan;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 import sample.consumer.domain.WorkUnit;
 
@@ -14,11 +12,8 @@ public class WorkUnitsConsumer {
     private static final Logger log = LoggerFactory.getLogger(RestController.class);
 
     @KafkaListener(topics = "workunitsDemo8")
-    public void onReceiving(WorkUnit workUnit, @Header(KafkaHeaders.OFFSET) Integer offset,
-                            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
-                            @Header(KafkaHeaders.RECEIVED_TOPIC) String topic
-                            ) {
-        log.info("Processing topic = {}, partition = {}, offset = {}, workUnit = {}",
-                topic, partition, offset, workUnit);
+    @ContinueSpan(log = "Received work unit")
+    public void onReceiving(WorkUnit workUnit) {
+        log.info("Processing workUnit = {}", workUnit);
     }
 }

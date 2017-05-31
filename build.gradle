@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.4.2.RELEASE'
+        springBootVersion = '1.5.3.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -35,12 +35,15 @@ subprojects {
     }
 
     dependencies {
-        compile 'org.apache.kafka:kafka-clients:0.10.0.1'
+//        compile 'org.apache.kafka:kafka-clients:0.10.0.1'
+//        compile 'org.apache.kafka:kafka-clients:0.10.0.1'
 //        compile 'org.apache.kafka:kafka-clients:0.10.2.1'
-        compile 'org.springframework.kafka:spring-kafka:1.1.2.BUILD-SNAPSHOT'
+        compile 'org.springframework.kafka:spring-kafka:1.2.1.RELEASE'
         compile 'org.springframework.boot:spring-boot-starter-web'
         compile 'com.google.guava:guava:20.0'
         compile 'org.springframework.cloud:spring-cloud-starter-sleuth'
+        compile "org.springframework.cloud:spring-cloud-sleuth-zipkin-stream"
+        compile "org.springframework.cloud:spring-cloud-stream-binder-kafka"
         testCompile 'org.springframework.boot:spring-boot-starter-test'
         testCompile "org.springframework.kafka:spring-kafka-test:1.1.2.BUILD-SNAPSHOT"
     }

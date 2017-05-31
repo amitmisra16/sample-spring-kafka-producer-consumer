@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.SpanName;
 import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.cloud.sleuth.annotation.ContinueSpan;
+import org.springframework.cloud.sleuth.annotation.NewSpan;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.Message;
@@ -21,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@SpanName(value="dispatch")
 public class WorkUnitDispatcher {
 
     @Autowired
@@ -35,6 +36,7 @@ public class WorkUnitDispatcher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkUnitDispatcher.class);
 
+    @ContinueSpan(log="dispatching work unit")
     public boolean dispatch(WorkUnit workUnit) {
         try {
             SendResult<String, WorkUnit> sendResult = workUnitsKafkaTemplate.send(new Message<WorkUnit>() {
@@ -51,7 +53,6 @@ public class WorkUnitDispatcher {
                     headersMap.put("traceId", new Long(span.getTraceId()).toString());
                     headersMap.put(Span.SPAN_ID_NAME, new Long(span.getSpanId()));
                     headersMap.put("spanId", new Long(span.getSpanId()));
-                    headersMap.put("name", "Sunaina");
 
 //                    headersMap.put("B3-Sampled", tracer.)
 //                    headersMap.put("X-B3-ParentSpanId", span.getParents().get(0));

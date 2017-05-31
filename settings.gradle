@@ -1,2 +1,4 @@
 rootProject.name="sample-spring-kafka-producer-consumer"
 include('sample-spring-kafka-producer', 'sample-spring-kafka-consumer')
+include 'sample-spring-zipkin-collector'
+
